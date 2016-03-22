@@ -64,3 +64,6 @@ target/
 # Virtual environment
 venv/
 
+
+*.swp
+
