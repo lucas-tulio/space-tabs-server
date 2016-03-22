@@ -64,6 +64,8 @@ target/
 # Virtual environment
 venv/
 
-
 *.swp
+
+# Config file
+app.conf
 
