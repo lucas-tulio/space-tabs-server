@@ -27,7 +27,7 @@ def get_image():
   images = []
   for iotd in result.json()['objects']:
     images.append(iotd['image'])
-  
+
   # Get one of the images
   image_query = base_url + str(choice(images)) + '?' + auth_string
   result = requests.get(image_query)
