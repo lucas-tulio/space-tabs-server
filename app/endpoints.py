@@ -10,7 +10,7 @@ with open('app.conf') as conf:
 base_url = 'http://www.astrobin.com'
 api_ver_string = '/api/v1/'
 auth_string = 'api_key=' + str(api_key) + '&api_secret=' + str(api_secret) + '&format=json'
-iotd_string = 'imageoftheday/?limit=30&offset=1'
+iotd_string = 'imageoftheday/?limit=60&offset=1'
 iotd_query = base_url + api_ver_string + iotd_string + '&' + auth_string
 
 @app.route('/')
