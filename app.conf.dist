@@ -1,3 +1,7 @@
 api_key=
 api_secret=
-
+db_host=localhost
+db_port=3306
+db_user=root
+db_password=
+db_schema=spacetabs
