@@ -1,5 +1,6 @@
 import requests
 from random import choice
+from flask import request
 from app import app
 from app.db import Database
 
@@ -40,6 +41,7 @@ def get_image():
 
   image_query = base_url + str(image) + '?' + auth_string
   result = requests.get(image_query)
+  db.log(request.remote_addr, request.user_agent)
   return result.text
 
 @app.errorhandler(404)

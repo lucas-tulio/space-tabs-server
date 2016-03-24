@@ -92,3 +92,19 @@ class Database:
 
     self._disconnect()
     return None
+
+  def log(self, user_ip, user_agent):
+    """Log API access"""
+
+    self._connect()
+    try:
+      self.cur.execute("""INSERT INTO log (user_ip, user_agent) VALUES (%s, %s)""", (str(user_ip), str(user_agent)))
+      self.conn.commit()
+      self._disconnect()
+      return True
+    except Exception as e:
+      print('Error saving log')
+      print(e)
+
+    self._disconnect()
+    return False
