@@ -37,25 +37,30 @@ class Database:
 
     self._connect()
     try:
-      self.cur.execute("""select (created_at) from iotd_updates order by created_at desc limit 1""")
-      for row in self.cur.fetchall():
-        print(row)
+      self.cur.execute("""select (created_at) from iotd_updates where created_at > adddate(now(), interval -1 day) order by created_at desc limit 1""")
+      results = self.cur.fetchall()
+      if len(results) == 0:
+        print('Needs to update list')
+        self._disconnect()
+        return True
 
-      self._disconnect()
-      return True
     except Exception as e:
       print('Error running query')
       print(e)
 
+    print('List already updated')
     self._disconnect()
     return False
 
-  def update_list(self):
+  def update_list(self, images):
     """Update the list of images"""
 
     self._connect()
     try:
-      self.cur.execute()
+      self.cur.execute("""DELETE FROM iotd_images""")
+      for image in images:
+        self.cur.execute("""INSERT INTO iotd_images (link) VALUES (%s)""", (image))
+      self.cur.execute("""INSERT INTO iotd_updates (created_at) VALUES (now())""")
       self.conn.commit()
       self._disconnect()
       return True
@@ -68,4 +73,22 @@ class Database:
 
   def get_image(self):
     """Get one image link from the list"""
-    pass
+
+    self._connect()
+    try:
+      self.cur.execute("""select link from iotd_images order by rand() limit 1""")
+      row = self.cur.fetchone()
+      if row is None:
+        print('No images to get')
+        self._disconnect()
+        return
+      image = row[0]
+      self._disconnect()
+      return image
+
+    except Exception as e:
+      print('Error fetching image')
+      print(e)
+
+    self._disconnect()
+    return None

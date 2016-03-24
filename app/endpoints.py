@@ -14,6 +14,8 @@ auth_string = 'api_key=' + str(api_key) + '&api_secret=' + str(api_secret) + '&f
 iotd_string = 'imageoftheday/?limit=100&offset=1'
 iotd_query = base_url + api_ver_string + iotd_string + '&' + auth_string
 
+db = Database()
+
 @app.route('/')
 @app.route('/index')
 def index():
@@ -21,18 +23,22 @@ def index():
 
 @app.route('/image', methods=['GET'])
 def get_image():
-  '''Get one of the images of the day'''
+  """Get one of the images of the day"""
 
-  # Get the list of iotd
-  result = requests.get(iotd_query)
-  images = []
-  for iotd in result.json()['objects']:
-    images.append(iotd['image'])
+  # Check if we need to update the list
+  if db.should_update():
+    result = requests.get(iotd_query)
+    images = []
+    for iotd in result.json()['objects']:
+      images.append(iotd['image'])
+    db.update_list(images)
 
-  print(str(len(images)))
+  # Get one of the images from the database cache
+  image = db.get_image()
+  if image is None:
+    return internal_server_error(None)
 
-  # Get one of the images
-  image_query = base_url + str(choice(images)) + '?' + auth_string
+  image_query = base_url + str(image) + '?' + auth_string
   result = requests.get(image_query)
   return result.text
 
