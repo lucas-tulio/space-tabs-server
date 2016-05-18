@@ -1,5 +1,6 @@
-api_key=
-api_secret=
+astrobin_api_key=
+astrobin_api_secret=
+nasa_api_key=
 db_host=localhost
 db_port=3306
 db_user=root

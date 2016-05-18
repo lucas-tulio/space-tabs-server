@@ -1,5 +1,5 @@
 # space-tabs-server
-Flask app that consumes the Astrobin.com API and serves its images to the Space Tabs extension
+Flask app that consumes Astrobin and NASA APOD API, then serves its images to the Space Tabs extension
 
 ### Setup
 
@@ -7,4 +7,3 @@ Flask app that consumes the Astrobin.com API and serves its images to the Space 
 2. `cp app.conf.dist app.conf` and include database and API info in `app.conf`
 3. Run `db/create-schema.sql` in your MySQL database
 4. `./run.py`
-
